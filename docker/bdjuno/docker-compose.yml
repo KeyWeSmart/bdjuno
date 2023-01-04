@@ -1,0 +1,18 @@
+version: "3.6"
+services:
+  bdjuno:
+    image: bdjuno:v0.45
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    container_name: bdjuno
+    hostname: bdjuno
+    # restart: always
+    expose:
+      - "3000"
+    volumes:
+      - ../../docker/bdjuno:/bdjuno
+      - ../../database/schema:/bdjuno/database/schema
+    # command: ["tail","-F" ,"anything"]
+    command: sh -c "bdjuno db --home /bdjuno --schema-dir /bdjuno/database/schema && bdjuno start --home /bdjuno"
+    # command: bdjuno db --home /bdjuno --schema-dir /bdjuno/database/schema 

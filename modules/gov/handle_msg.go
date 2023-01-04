@@ -9,8 +9,9 @@ import (
 	"github.com/forbole/bdjuno/v3/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	juno "github.com/forbole/juno/v3/types"
+	govtype "github.com/cosmos/cosmos-sdk/x/gov/types"
+	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types/v1beta1"
+	juno "github.com/forbole/juno/v4/types"
 )
 
 // HandleMsg implements modules.MessageModule
@@ -36,12 +37,12 @@ func (m *Module) HandleMsg(index int, msg sdk.Msg, tx *juno.Tx) error {
 // handleMsgSubmitProposal allows to properly handle a handleMsgSubmitProposal
 func (m *Module) handleMsgSubmitProposal(tx *juno.Tx, index int, msg *govtypes.MsgSubmitProposal) error {
 	// Get the proposal id
-	event, err := tx.FindEventByType(index, govtypes.EventTypeSubmitProposal)
+	event, err := tx.FindEventByType(index, govtype.EventTypeSubmitProposal)
 	if err != nil {
 		return fmt.Errorf("error while searching for EventTypeSubmitProposal: %s", err)
 	}
 
-	id, err := tx.FindAttributeByKey(event, govtypes.AttributeKeyProposalID)
+	id, err := tx.FindAttributeByKey(event, govtype.AttributeKeyProposalID)
 	if err != nil {
 		return fmt.Errorf("error while searching for AttributeKeyProposalID: %s", err)
 	}
@@ -109,7 +110,7 @@ func (m *Module) handleMsgVote(tx *juno.Tx, msg *govtypes.MsgVote) error {
 		return fmt.Errorf("error while parsing time: %s", err)
 	}
 
-	vote := types.NewVote(msg.ProposalId, msg.Voter, msg.Option, txTimestamp, tx.Height)
+	vote := types.NewVote(msg.ProposalId, msg.Voter, govtypes.VoteOption(msg.Option), txTimestamp, tx.Height)
 
 	return m.db.SaveVote(vote)
 }
