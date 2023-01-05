@@ -64,6 +64,7 @@ func getBasicManagers() []module.BasicManager {
 // This should be edited by custom implementations if needed.
 func getAddressesParser() messages.MessageAddressesParser {
 	return messages.JoinMessageParsers(
+		sesamenetMessageAddressesParser,
 		messages.CosmosMessageAddressesParser,
 	)
 }

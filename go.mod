@@ -162,7 +162,8 @@ require (
 )
 
 replace (
-	github.com/forbole/juno/v4 => /home/phuong/repo/juno
+	github.com/forbole/juno/v4 => github.com/keywesmart/juno/v4 v4.0.0-20230104033309-ec9e39f19479
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
+	github.com/keywesmart/sesamenet => github.com/keywesmart/sesamenet v0.0.3-0.20230105055709-42e6cc059707
 	github.com/tendermint/tendermint => github.com/forbole/tendermint v0.34.13-0.20210820072129-a2a4af55563d
 )
