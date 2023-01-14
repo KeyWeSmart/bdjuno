@@ -15,6 +15,7 @@ COPY . ./
 ## Copy the library you want to the final location that will be found by the linker flag `-lwasmvm_muslc`
 #RUN cp /lib/libwasmvm_muslc.$(uname -m).a /lib/libwasmvm_muslc.a
 
+RUN go mod tidy
 RUN go mod download
 RUN make build
 
@@ -32,5 +33,7 @@ FROM alpine:latest
 ##################################################
 #RUN apk update && apk add --no-cache ca-certificates build-base
 WORKDIR /bdjuno
-COPY --from=builder /go/src/github.com/forbole/bdjuno/build/bdjuno /usr/bin/bdjuno
+COPY --from=builder /go/src/github.com/forbole/bdjuno/build/bdjuno ./
+RUN chmod +x ./bdjuno
+RUN mv ./bdjuno /bin
 CMD [ "bdjuno" ]

@@ -4,26 +4,20 @@ services:
     image: hasura/graphql-engine:v2.15.2
     container_name: hasura
     hostname: hasura
-    depends_on:
-      - postgres
     restart: always
     expose:
       - "8080"
-    ports:
-      - 8080:8080
     environment:
-      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:1111@postgres:5432/bdjuno
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:1111@postgres:5432/sesame
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
       - HASURA_GRAPHQL_DEV_MODE=true
       - HASURA_GRAPHQL_METADATA_DIR=/bdjuno/hasura/metadata
       - HASURA_GRAPHQL_ENABLED_LOG_TYPES=startup, http-log, webhook-log, websocket-log, query-log
-      # - HASURA_GRAPHQL_ADMIN_SECRET=dcKqS7jW4rmk3MTZ
+      - HASURA_GRAPHQL_ADMIN_SECRET=1111
       - HASURA_GRAPHQL_INSECURE_SKIP_TLS_VERIFY=true
       - ACTION_BASE_URL=http://bdjuno:3000
     volumes:
       - ../../hasura:/bdjuno/hasura
-    extra_hosts:
-    - "host.docker.internal:host-gateway"
   nginx:
     container_name: nginx
     image: nginx:alpine
@@ -33,17 +27,3 @@ services:
     volumes:
       - ../../docker/hasura/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - ../../docker/hasura/nginx/certs:/etc/nginx/certs
-  postgres:
-    image: postgres:14.1
-    container_name: postgres
-    hostname: postgres
-    restart: always
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_PASSWORD=1111
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=bdjuno
-    volumes:
-      - /tmp/postgres/data:/var/lib/postgresql/data
-      - ../../database/schema:/bdjuno/database/schema

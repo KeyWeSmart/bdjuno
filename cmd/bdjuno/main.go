@@ -16,6 +16,7 @@ import (
 	"github.com/forbole/bdjuno/v3/database"
 	"github.com/forbole/bdjuno/v3/modules"
 
+	"github.com/forbole/bdjuno/v3/cmd/db"
 	sesameapp "github.com/keywesmart/sesamenet/app"
 )
 
@@ -41,6 +42,7 @@ func main() {
 		parsecmd.NewParseCmd(cfg.GetParseConfig()),
 		migratecmd.NewMigrateCmd(cfg.GetName(), cfg.GetParseConfig()),
 		startcmd.NewStartCmd(cfg.GetParseConfig()),
+		db.InitDBCmd(cfg.GetParseConfig()),
 	)
 
 	executor := cmd.PrepareRootCmd(cfg.GetName(), rootCmd)
